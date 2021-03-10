@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 const Header = (props) => {
+  console.log(props)
   return (
     <>
     <h1>{props.course}</h1>
@@ -10,46 +11,58 @@ const Header = (props) => {
 }
 
 const Content = (props) => {
+  console.log(props)
   return (
     <>
-      <p>
-      <Part parts={props.parts[0]} exercises={props.exercises[0]} />
-      </p>
-      <p>
-      <Part parts={props.parts[1]} exercises={props.exercises[1]} />
-      </p>
-      <p>
-      <Part parts={props.parts[2]} exercises={props.exercises[2]} />
-      </p>
+      <Part parts={props.parts[0].name} exercises={props.parts[0].exercises} />
+      <Part parts={props.parts[1].name} exercises={props.parts[1].exercises} />
+      <Part parts={props.parts[2].name} exercises={props.parts[2].exercises} />
     </>
     )
 }
 
 const Part = (props) => {
+  console.log(props)
   return (
     <p>{props.parts} {props.exercises}</p>
   )
 }
 
 const Total = (props) => {
+
+  let sumOfParts = props.parts.reduce((name, exer) => exer.exercises, 0)
+  
   return (
     <>
-    <p>Number of exercise {props.exercises.reduce((a, b, c) => a + b + c)}</p>
+    <p>Number of exercise {sumOfParts}</p>
     </>
     )
 }
 
 const App = () => {
-  const course = 'Half Stack Application Development'
-
-  const parts = ['Fundamentals of React', 'Using Props To Pass Data', 'State of A Component']
-  const exercises = [10, 7, 14]
+  const course = {
+    name: 'Half Stack Application Development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using Props to Pass Data',
+        exercises: 7
+      },
+      {
+        name: 'State of a Component',
+        exercises: 14
+      }
+    ]
+  }
 
   return (
     <div>
-      <Header course={course} />
-      <Content exercises = {exercises} parts = {parts} />
-      <Total exercises = {exercises} />
+      <Header course = {course.name} />
+      <Content parts = {course.parts} />
+      <Total parts = {course.parts} />
     </div>
   )
 }
