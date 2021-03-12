@@ -29,9 +29,7 @@ const Part = (props) => {
 }
 
 const Total = (props) => {
-
-  let sumOfParts = props.parts.reduce((name, exer) => exer.exercises, 0)
-  
+  let sumOfParts = props.parts.reduce((name, item) => item.exercises, 0)
   return (
     <>
     <p>Number of exercise {sumOfParts}</p>
