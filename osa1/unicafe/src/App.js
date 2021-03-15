@@ -13,9 +13,45 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const voteGood = () => setGood(good + 1)
-  const voteNeutral = () => setNeutral(neutral + 1)
-  const voteBad = () => setBad(bad + 1)
+  const [votes, setVotes] = useState(0)
+  const [average, setAverage] = useState(0)
+  const [positive, setPositive] = useState(0)
+
+  const voteGood = () => { 
+    setGood(good + 1)
+    countVotes()
+    countAverage()
+    countPositive()
+  }
+
+  const voteNeutral = () => {
+    setNeutral(neutral + 1)
+    countVotes()
+    countAverage()
+    countPositive()
+  }
+
+  const voteBad = () => {
+    setBad(bad + 1)
+    countVotes()
+    countAverage()
+    countPositive()
+  }
+  
+  const countVotes = () => {
+    setVotes(votes + 1)
+  }
+
+  const countAverage = () => {
+    let plus = good * 1
+    let minus = bad * -1
+    let points = plus + minus
+    setAverage(points / votes)
+  }
+
+  const countPositive = () => {
+    setPositive(good / votes)
+  }
 
   return (
     <div>
@@ -30,6 +66,9 @@ const App = () => {
         <Display element={good} text='Good' />
         <Display element={neutral} text='Neutral' />
         <Display element={bad} text='Bad' />
+        <Display element={votes} text='All' />
+        <Display element={average} text='Average' />
+        <Display element={positive} text='Positive' />
       </div>
     </div>
   )
