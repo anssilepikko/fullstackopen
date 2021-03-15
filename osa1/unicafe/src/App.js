@@ -5,7 +5,39 @@ const Button = ({handleClick, text}) => (
   <button onClick={handleClick}>{text}</button>
 )
 
-const Display = ({element, text}) => <div>{text}: {element}</div>
+const Statistics = ({good, neutral, bad}) => {
+
+  const countVotes = () => {
+    return good + neutral + bad
+  }
+
+  const countAverage = () => {
+    let plus = good * 1
+    let minus = bad * -1
+    let points = plus + minus
+    return points / countVotes()
+  }
+
+  const countPositive = () => {
+    return good / countVotes()
+  }
+  
+  if (countVotes() > 0) {
+    return (
+    <div>
+    good: {good}<br/>
+    neutral: {neutral}<br/>
+    bad: {bad}<br/>
+    votes: {countVotes()}<br/>
+    average: {countAverage()}<br/>
+    positive: {countPositive()}<br/>
+    </div>
+    )
+  }
+  return (
+  <div>No feedback given</div>
+  )
+}
 
 const App = () => {
   // Jokaiselle äänelle oma state
@@ -13,44 +45,16 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const [votes, setVotes] = useState(0)
-  const [average, setAverage] = useState(0)
-  const [positive, setPositive] = useState(0)
-
   const voteGood = () => { 
     setGood(good + 1)
-    countVotes()
-    countAverage()
-    countPositive()
   }
 
   const voteNeutral = () => {
     setNeutral(neutral + 1)
-    countVotes()
-    countAverage()
-    countPositive()
   }
 
   const voteBad = () => {
     setBad(bad + 1)
-    countVotes()
-    countAverage()
-    countPositive()
-  }
-  
-  const countVotes = () => {
-    setVotes(votes + 1)
-  }
-
-  const countAverage = () => {
-    let plus = good * 1
-    let minus = bad * -1
-    let points = plus + minus
-    setAverage(points / votes)
-  }
-
-  const countPositive = () => {
-    setPositive(good / votes)
   }
 
   return (
@@ -63,12 +67,7 @@ const App = () => {
       </div>
       <h1>Statistics</h1>
       <div>
-        <Display element={good} text='Good' />
-        <Display element={neutral} text='Neutral' />
-        <Display element={bad} text='Bad' />
-        <Display element={votes} text='All' />
-        <Display element={average} text='Average' />
-        <Display element={positive} text='Positive' />
+        <Statistics good={good} neutral={neutral} bad={bad} />
       </div>
     </div>
   )
