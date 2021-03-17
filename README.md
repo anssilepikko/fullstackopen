@@ -1,6 +1,6 @@
-#fullStackOpen
+#fullstackopen
 
-Exercises for fullstackopen.com course
+My exercises for fullstackopen.com course
 
-Osa0 [x]
-Osa1 [x]
+- Osa0 [x]
+- Osa1 [x]
