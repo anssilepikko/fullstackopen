@@ -12,23 +12,37 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
   const [votes, setVotes]= useState(new Uint8Array(anecdotes.length))
+  const [best, setBest] = useState(0)
   
   const randomize = () => {
     let rand = Math.floor(Math.random() * anecdotes.length)
-    console.log(rand)
     setSelected(rand)
   }
 
   const vote = () => {
-    votes[selected] += 1 
+    const copy = [...votes]
+    copy[selected] += 1
+    setVotes(copy)
+    setBest(copy.indexOf(findMax(copy)))
+    console.log(copy)
+  }
+
+  function findMax(array) {
+    return array.reduce(function (a, b) {
+      return ( a > b ? a : b );
+    });
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <Button event={randomize} text='Randomize' />
       <Button event={vote} text='Vote' />
-      <p>Voted {votes[selected]} times</p>  
       <p>{anecdotes[selected]}</p>
+      <p>Voted {votes[selected]} times</p>  
+      <h1>Most voted anecdote</h1>
+      <p>{anecdotes[best]}</p>
+      <p>Voted {votes[best]} times</p> 
     </div>
   )
 }
