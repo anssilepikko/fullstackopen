@@ -5,9 +5,16 @@ const Button = ({handleClick, text}) => (
   <button onClick={handleClick}>{text}</button>
 )
 
-const StatisticLine = ({statistic, text}) => (
-  <div>{text}: {statistic}</div>
+const StatisticLine = ({statistic, text}) => {
+  return (
+  <>
+  <tr>
+    <td>{text}:</td>
+    <td>{statistic}</td>
+  </tr>
+  </>
   )
+}
 
 const Statistics = ({good, neutral, bad}) => {
 
@@ -28,14 +35,18 @@ const Statistics = ({good, neutral, bad}) => {
   
   if (countVotes() > 0) {
     return (
-    <div>
-    <StatisticLine statistic={good} text='Good' />
-    <StatisticLine statistic={neutral} text='Neutral' />
-    <StatisticLine statistic={bad} text='Good' />
-    <StatisticLine statistic={countVotes()} text='Votes' />
-    <StatisticLine statistic={countAverage()} text='Average' />
-    <StatisticLine statistic={countPositive()} text='Positive' />
-    </div>
+    <>
+      <table>
+        <tbody>
+          <StatisticLine statistic={good} text='Good' />
+          <StatisticLine statistic={neutral} text='Neutral' />
+          <StatisticLine statistic={bad} text='Good' />
+          <StatisticLine statistic={countVotes()} text='Votes' />
+          <StatisticLine statistic={countAverage()} text='Average' />
+          <StatisticLine statistic={countPositive()} text='Positive' />
+        </tbody>
+      </table>
+    </>
     )
   }
   return (
@@ -44,7 +55,6 @@ const Statistics = ({good, neutral, bad}) => {
 }
 
 const App = () => {
-  // Jokaiselle äänelle oma state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
@@ -62,18 +72,20 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h1>Vote</h1>
-      <div>
-        <Button handleClick={voteGood} text='Good' />
-        <Button handleClick={voteNeutral} text='Neutral' />
-        <Button handleClick={voteBad} text='Bad' />
-      </div>
-      <h1>Statistics</h1>
-      <div>
-        <Statistics good={good} neutral={neutral} bad={bad} />
-      </div>
-    </div>
+  <div>
+    <h1>Give feedback!</h1>
+  <table>
+    <tbody>
+      <tr>
+        <td><Button handleClick={voteGood} text='Good' /></td>
+        <td><Button handleClick={voteNeutral} text='Neutral' /></td>
+        <td><Button handleClick={voteBad} text='Bad' /></td>
+        </tr>
+    </tbody>
+  </table>
+  <h1>Results</h1>
+    <Statistics good={good} neutral={neutral} bad={bad} />
+  </div>
   )
 }
 
