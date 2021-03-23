@@ -8,6 +8,12 @@ const App = (props) => {
 
   const addPerson = (event) => {
     event.preventDefault()
+    // Check if person (name) already exists
+    if (findPerson(newName)) {
+      // Template string
+      window.alert(`${newName} is already added to phonebook`)
+      return
+    }
     // One persons's details stored in a object
     const personObject = {
       id: persons.length + 1,
@@ -25,6 +31,19 @@ const App = (props) => {
     console.log(event.target.value)
     // Prints input event value to the input field
     setNewName(event.target.value)
+  }
+
+  const findPerson = (person) => {
+    console.log('FindPerson input:', person)
+    // Loop trough objects and find an object with the same name
+    // Return true if found, false if not found
+    const found = persons.find(item => item.name === person)
+    if (found) {
+      console.log('FindPerson found', found)
+      return true
+    }
+    console.log('FindPerson', person, 'not found')
+    return false
   }
 
   return (
