@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import Person from './components/Person'
+import Numbers from './components/Numbers.js'
+import Form from './components/Form.js'
+import Filter from './components/Filter.js'
 
 const App = (props) => {
   // All persons in the phonebook
   const [persons, setPersons] = useState(props.persons)
-  // Variables for field entries
+  // State-variables for field entries
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
@@ -31,9 +33,11 @@ const App = (props) => {
     setPersons(persons.concat(personObject))
     console.log('New person added to phonebook:', personObject)
 
-    // Clean the input fields
+    // Reset the states (input fields)
     setNewName('')
     setNewNumber('')
+    setNewNumber('')
+    console.log('Fields reset')
   }
 
   // What happens when there is a change in the name
@@ -58,19 +62,16 @@ const App = (props) => {
   }
 
   const findPerson = (person) => {
+    console.log(persons)
     console.log('FindPerson input:', person)
     // Loop trough objects and find an object with the same name
     // Return true if found, false if not found
-    const found = persons.find(item => item.name.toUpperCase === person.toUpperCase)
-    if (found) {
-      console.log('FindPerson found:', found)
-      return true
-    }
-    console.log('FindPerson', person, 'not in phonebook')
-    return false
+    const found = persons.find(item => item.name === person)
+    console.log('Found:', found)
+    return found
   }
 
-  const filterPersons = () => {
+  const filterNumbers = () => {
     if (newFilter === '') return persons
     // Serach matching strings from names
     const filtered = persons.filter(person => person.name.toUpperCase().includes(newFilter.toUpperCase()))
@@ -80,25 +81,11 @@ const App = (props) => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          Name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          Number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Form addPerson={addPerson} name={newName} handleName={handleNameChange} number={newNumber} handleNumber={handleNumberChange} />
       <h2>Numbers</h2>
-      <div>
-        Filter: <input value={newFilter} onChange={handleFilterChange} />
-      </div>
+      <Filter name={newFilter} handleName={handleFilterChange} />
       <ul>
-        {filterPersons().map(person =>
-          <Person key={person.id} person={person} />
-        )}
+        <Numbers numbers={filterNumbers()} />
       </ul>
     </div>
   )

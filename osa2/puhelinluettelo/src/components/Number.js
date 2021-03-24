@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Person = ({ person }) => {
+const Number = ({ person }) => {
   return (
     <li>{person.name}, {person.number}</li>
   )
 }
 
-export default Person
+export default Number
