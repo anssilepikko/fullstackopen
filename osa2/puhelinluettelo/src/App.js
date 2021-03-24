@@ -13,8 +13,10 @@ const App = (props) => {
 
   const addPerson = (event) => {
     event.preventDefault()
+
     // Do nothing if name not given
     if (newName === '') return
+
     // Check if person (name) already exists
     if (findPerson(newName)) {
       // Alert window template string
@@ -22,7 +24,7 @@ const App = (props) => {
       return
     }
 
-    // One persons's details stored in a object
+    // Object for person
     const personObject = {
       id: persons.length + 1,
       name: newName,
@@ -38,6 +40,7 @@ const App = (props) => {
     setNewNumber('')
     setNewNumber('')
     console.log('Fields reset')
+
   }
 
   // What happens when there is a change in the name
