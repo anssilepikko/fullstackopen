@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import Numbers from './components/Numbers.js'
 import Form from './components/Form.js'
 import Filter from './components/Filter.js'
@@ -10,6 +11,17 @@ const App = (props) => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+
+  const hook = () => {
+    console.log('Hook effect called')
+    axios.get('http://localhost:3001/persons')
+    .then(response => {
+      console.log('Hook promise fulfilled')
+      setPersons(response.data)
+    })
+  }
+
+  useEffect(hook, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -40,7 +52,6 @@ const App = (props) => {
     setNewNumber('')
     setNewNumber('')
     console.log('Fields reset')
-
   }
 
   // What happens when there is a change in the name
@@ -72,8 +83,9 @@ const App = (props) => {
     const found = persons.find(item => item.name === person)
     console.log('Found:', found)
     return found
+  
   }
-
+  
   const filterNumbers = () => {
     if (newFilter === '') return persons
     // Serach matching strings from names
