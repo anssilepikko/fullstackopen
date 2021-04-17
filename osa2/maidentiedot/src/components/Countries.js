@@ -1,7 +1,8 @@
 import React from 'react'
 import Country from './Country.js'
 
-const Countries = ({ countries }) => {
+const Countries = ({ countries, showDetails, selected }) => {
+
     if (countries.length > 10) {
         return (
             <>
@@ -11,21 +12,14 @@ const Countries = ({ countries }) => {
     }
 
     if (countries.length === 1) {
-        return (
-            <>
-            {countries.map(country =>
-                <Country key={country.name} country={country} details={true} />
-            )}
-
-        </>
-        )
+        selected = countries[0].name
+        console.log('Countries.js / selected:', selected)
     }
-    
 
     return (
         <>
             {countries.map(country =>
-                <Country key={country.name} country={country} />
+                <Country key={country.name} country={country} showDetails={showDetails} selected={selected} />
             )}
 
         </>

@@ -7,6 +7,7 @@ const App = () => {
 
   const [countries, setCountries] = useState([])
   const [filter, setFilter] = useState('')
+  const [selected, setShowCountry] = useState('')
 
   const hook = () => {
     console.log('Hook effect')
@@ -35,12 +36,17 @@ const App = () => {
     return filtered
   }
 
+  const showDetails = (event) => {
+    event.preventDefault()
+    console.log("Show-button pressed")
+    setShowCountry(event.target.value)
+}
 
   return (
     <div>
       <Filter name={filter} handleName={handleFilterChange} />
       <ul>
-        <Countries countries={filterCountries()} />
+        <Countries countries={filterCountries()} showDetails={showDetails} selected={selected} />
       </ul>
     </div>
   )

@@ -1,8 +1,13 @@
 import React from 'react'
 import Language from './Language.js'
 
-const Country = ({ country, details }) => {
-    if (details === true) {
+const Country = ({ country, showDetails, selected }) => {
+
+    //console.log('Country.js / country:', country.name)
+    //console.log('Country.js / selected:', selected)
+
+    if (country.name === selected) {
+        console.log('Country.js / Showing details of:', selected)
         return (
             <li>
                 <h2>{country.name}</h2>
@@ -14,12 +19,13 @@ const Country = ({ country, details }) => {
                         <Language key={language.name} language={language} />
                     )}
                 </ul>
+                <br />
             </li>
         )
     }
 
     return (
-        <li>{country.name}</li>
+        <li>{country.name} <button value={country.name} onClick={showDetails}>show</button></li>
     )
 }
 
