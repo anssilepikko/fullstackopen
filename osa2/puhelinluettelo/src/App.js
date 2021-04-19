@@ -15,7 +15,7 @@ const App = (props) => {
   const hook = () => {
     axios.get('http://localhost:3001/persons')
     .then(response => {
-      console.log('Data retrieved: /persons')
+      console.log('Data retrieved from: /persons')
       setPersons(response.data)
     })
   }
