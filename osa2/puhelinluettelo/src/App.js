@@ -13,10 +13,9 @@ const App = (props) => {
   const [newFilter, setNewFilter] = useState('')
 
   const hook = () => {
-    console.log('Hook effect called')
     axios.get('http://localhost:3001/persons')
     .then(response => {
-      console.log('Hook promise fulfilled')
+      console.log('Data retrieved: /persons')
       setPersons(response.data)
     })
   }
@@ -38,14 +37,16 @@ const App = (props) => {
 
     // Object for person
     const personObject = {
-      id: persons.length + 1,
       name: newName,
       number: newNumber
     }
 
-    // Add new person to persons-state
-    setPersons(persons.concat(personObject))
-    console.log('New person added to phonebook:', personObject)
+    axios.post('http://localhost:3001/persons', personObject)
+    .then(response => {
+      // Concat person (response data) to persons and set state
+      setPersons(persons.concat(response.data))
+      console.log('New person added to phonebook:', personObject)
+    })
 
     // Reset the states (input fields)
     setNewName('')
