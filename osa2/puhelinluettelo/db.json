@@ -3,7 +3,7 @@
     {
       "id": 2,
       "name": "Katto Kassinen",
-      "number": "059566409"
+      "number": "123"
     },
     {
       "id": 3,
@@ -19,31 +19,6 @@
       "id": 5,
       "name": "Kaato Kolmikas",
       "number": "027595649"
-    },
-    {
-      "name": "Testinimi4",
-      "number": "123456789",
-      "id": 9
-    },
-    {
-      "name": "Testinimi5",
-      "number": "123",
-      "id": 10
-    },
-    {
-      "name": "Testinimi6",
-      "number": "123456789",
-      "id": 11
-    },
-    {
-      "name": "Testinimi10",
-      "number": "12345678",
-      "id": 12
-    },
-    {
-      "name": "Testinimi11",
-      "number": "12345",
-      "id": 13
     }
   ]
 }

@@ -25,23 +25,45 @@ const App = (props) => {
   }, [])
 
   const addPerson = (event) => {
+    // Estetään sivun latautuminen
     event.preventDefault()
 
     // Palataan, jos nimeä ei ole annettu
     if (newName === '') return
 
-    // Tarkistetaan löytyykö nimi jo luettelosta
-    if (findPerson(newName)) {
-      // Ilmoitusikkuna, jos löytyy
-      window.alert(`${newName} is already added to phonebook`)
-      // Ei tehdä mitään, palataan takaisin
-      return
-    }
-
     // Henkilö-objekti, jossa nimi ja numero
     const personObject = {
       name: newName,
       number: newNumber
+    }
+
+    // Tarkistetaan löytyykö nimi jo luettelosta
+    if (findPerson(newName)) {
+      // Ilmoitusikkuna, jos löytyy
+      const confirmReplace = window.confirm(`${newName} is already added to phonebook. Replace the number with a new one?`)
+
+      if (confirmReplace) {
+        // Etsitään nimeä vastaava henkilö
+        const person = persons.find(person => person.name === newName)
+        // Kopioidaan person ja muutetaan kopion number-kenttää
+        const edited = { ...person, number: newNumber }
+        // const id = person.id
+        const { id } = person
+
+        personService
+          .update(id, edited)
+          .then(returned => {
+            // Päivitetään tilan henkilö
+            setPersons(
+              persons.map(person =>
+                person.id !== id ? person : returned
+              )
+            )
+          }
+          )
+      }
+      // Palataan takaisin, jos numeroa ei vaihdeta
+      return
     }
 
     // Lähetetään henkilön tiedot oliona serverille
@@ -52,7 +74,7 @@ const App = (props) => {
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
       })
-      
+
     console.log('New person added to phonebook:', personObject)
 
     // Input-kenttien nollaus
@@ -119,20 +141,20 @@ const App = (props) => {
     <div>
       <h2>Phonebook</h2>
       <Form addPerson={addPerson}
-      name={newName}
-      handleName={handleNameChange}
-      number={newNumber}
-      handleNumber={handleNumberChange}
+        name={newName}
+        handleName={handleNameChange}
+        number={newNumber}
+        handleNumber={handleNumberChange}
       />
       <h2>Numbers</h2>
       <Filter
-      name={newFilter}
-      handleName={handleFilterChange}
+        name={newFilter}
+        handleName={handleFilterChange}
       />
       <ul>
         <Numbers
-        numbers={filterNumbers()}
-        handleRemove={handleRemove}
+          numbers={filterNumbers()}
+          handleRemove={handleRemove}
         />
       </ul>
     </div>
