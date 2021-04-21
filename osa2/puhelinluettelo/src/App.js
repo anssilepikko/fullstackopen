@@ -52,17 +52,21 @@ const App = (props) => {
 
         personService
           .update(id, edited)
-          .then(returned => {
+          .then(returnedPerson => {
             // Päivitetään tilan henkilö
+            // Mapataan pois vanha henkilö ja asetetaan uudet tilalle
+            console.log('Henkilölista ennen päivitystä:',persons)
+            console.log('Henkilölista, kun on päivitetty:', persons.map(person =>
+              person.id === id ? returnedPerson : person))
             setPersons(
               persons.map(person =>
-                person.id !== id ? person : returned
-              )
+                person.id === id ? returnedPerson : person)
             )
           }
           )
       }
       // Palataan takaisin, jos numeroa ei vaihdeta
+      console.log('Numeron päivitys peruttu')
       return
     }
 
@@ -105,6 +109,7 @@ const App = (props) => {
     setNewFilter(event.target.value)
   }
 
+  // Poistonapin toiminnallisuudet
   const handleRemove = (id) => {
     console.log('app.js / handleRemove / id:', id)
     const person = persons.find(person => person.id === id)
@@ -119,6 +124,7 @@ const App = (props) => {
 
   }
 
+  // Nimien etsintä, joka palauttaa totuusarvon
   const findPerson = (person) => {
     console.log(persons)
     console.log('FindPerson input:', person)
@@ -129,10 +135,10 @@ const App = (props) => {
     console.log('Found:', found)
     return found
   }
-
+  
+  // Etsitään hakuehtoa vastaavat nimet ja palautetaan ne
   const filterNumbers = () => {
     if (newFilter === '') return persons
-    // Etsitään hakuehtoa vastaavat nimet ja palautetaan ne
     const filtered = persons.filter(person => person.name.toUpperCase().includes(newFilter.toUpperCase()))
     return filtered
   }
