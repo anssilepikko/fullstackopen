@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Number = ({ person }) => {
+const Number = ({ person, handleRemove }) => {
   return (
-    <li>{person.name}, {person.number}</li>
+    <li>{person.name} / {person.number} / {person.id} / <button className="button" onClick={() => handleRemove(person.id)}>Remove</button></li>
   )
 }
 

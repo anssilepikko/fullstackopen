@@ -1,11 +1,15 @@
 import React from 'react'
 import Number from './Number.js'
 
-const Numbers = ({ numbers }) => {
+const Numbers = ({ numbers, handleRemove }) => {
     return (
         <>
             {numbers.map(person =>
-                <Number key={person.id} person={person} />
+                <Number key={person.id}
+                person={person}
+                // Remove-nappi
+                handleRemove={handleRemove}
+                />
             )}
 
         </>

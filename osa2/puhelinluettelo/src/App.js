@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Numbers from './components/Numbers.js'
 import Form from './components/Form.js'
 import Filter from './components/Filter.js'
-import noteService from './services/persons.js'
+import personService from './services/persons.js'
 
 
 const App = (props) => {
@@ -17,7 +17,7 @@ const App = (props) => {
   // Haetaan henkilöt serveriltä ja asetetaan
   // ne tilamuuttujaan
   useEffect(() => {
-    noteService
+    personService
       .getAll()
       .then(serverPersons => {
         setPersons(serverPersons)
@@ -34,6 +34,7 @@ const App = (props) => {
     if (findPerson(newName)) {
       // Ilmoitusikkuna, jos löytyy
       window.alert(`${newName} is already added to phonebook`)
+      // Ei tehdä mitään, palataan takaisin
       return
     }
 
@@ -46,29 +47,31 @@ const App = (props) => {
     // Lähetetään henkilön tiedot oliona serverille
     // Vastaanotetaan serveriltä saatu vastaus,
     // jossa tiedot ja lisätään ne ohjelman tilaan
-    noteService
+    personService
       .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
       })
+      
     console.log('New person added to phonebook:', personObject)
 
     // Input-kenttien nollaus
     setNewName('')
     setNewNumber('')
+    setNewFilter('')
     console.log('Fields reset')
   }
 
   // Mitä tapahtuu, kun nimikentässä havaitaan tapahtuma
   const handleNameChange = (event) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
     // Printataan tapahtuman arvo eli kirjain kenttään
     setNewName(event.target.value)
   }
 
   // Mitä tapahtuu, kun numerokentässä havaitaan tapahtuma
   const handleNumberChange = (event) => {
-    console.log(event.target.value)
+    //console.log(event.target.value)
     // Printataan tapahtuman arvo eli numero kenttään
     setNewNumber(event.target.value)
   }
@@ -78,6 +81,20 @@ const App = (props) => {
     //console.log(event.target.value)
     // Printataan tapahtuman arvo eli kirjain kenttään
     setNewFilter(event.target.value)
+  }
+
+  const handleRemove = (id) => {
+    console.log('app.js / handleRemove / id:', id)
+    const person = persons.find(person => person.id === id)
+    const remove = window.confirm(`Remove ${person.name} from phonebook?`)
+    if (remove) {
+      personService.remove(id).then(() => {
+        const filterOut = persons.filter(person => person.id !== id)
+        setPersons(filterOut)
+        console.log((`Person ${person.name} removed from phonebook`))
+      })
+    }
+
   }
 
   const findPerson = (person) => {
@@ -101,11 +118,22 @@ const App = (props) => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Form addPerson={addPerson} name={newName} handleName={handleNameChange} number={newNumber} handleNumber={handleNumberChange} />
+      <Form addPerson={addPerson}
+      name={newName}
+      handleName={handleNameChange}
+      number={newNumber}
+      handleNumber={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      <Filter name={newFilter} handleName={handleFilterChange} />
+      <Filter
+      name={newFilter}
+      handleName={handleFilterChange}
+      />
       <ul>
-        <Numbers numbers={filterNumbers()} />
+        <Numbers
+        numbers={filterNumbers()}
+        handleRemove={handleRemove}
+        />
       </ul>
     </div>
   )

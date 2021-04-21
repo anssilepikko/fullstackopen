@@ -19,13 +19,18 @@ const create = newObject => {
     const request = axios.post(baseUrl, newObject)
     return request.then(response => response.data)
 }
-
 const update = (id, newObject) => {
-    const request = axios.put('${baseUrl}/${id}', newObject)
+    const request = axios.put(`${baseUrl}/${id}`, newObject)
     return request.then(response => response.data)
 }
+const remove = (id) => {
+    const request = axios.delete(`${baseUrl}/${id}`)
+    console.log('persons.js / remove / request', request)
+    return request.then(response => response.data)
+}
+
 
 // Koska olion kenttien nimet ovat samat kuin
 // niiden arvon määrittelevien muuttujien nimet,
 // voidaan olion määrittely kirjoittaa tiivimmässä muodossa:
-export default { getAll, create, update }
+export default { getAll, create, update, remove }
