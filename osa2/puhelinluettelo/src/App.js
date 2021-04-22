@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Numbers from './components/Numbers.js'
 import Form from './components/Form.js'
 import Filter from './components/Filter.js'
+import Notification from './components/Notification.js'
 import personService from './services/persons.js'
+import './index.css'
 
 
 const App = (props) => {
@@ -13,6 +15,7 @@ const App = (props) => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   // Haetaan henkilöt serveriltä ja asetetaan
   // ne tilamuuttujaan
@@ -40,7 +43,7 @@ const App = (props) => {
     // Tarkistetaan löytyykö nimi jo luettelosta
     if (findPerson(newName)) {
       // Ilmoitusikkuna, jos löytyy
-      const confirmReplace = window.confirm(`${newName} is already added to phonebook. Replace the number with a new one?`)
+      const confirmReplace = window.confirm(`'${newName}' is already added to phonebook. Replace the number with a new one?`)
 
       if (confirmReplace) {
         // Etsitään nimeä vastaava henkilö
@@ -55,18 +58,25 @@ const App = (props) => {
           .then(returnedPerson => {
             // Päivitetään tilan henkilö
             // Mapataan pois vanha henkilö ja asetetaan uudet tilalle
-            console.log('Henkilölista ennen päivitystä:',persons)
-            console.log('Henkilölista, kun on päivitetty:', persons.map(person =>
-              person.id === id ? returnedPerson : person))
             setPersons(
               persons.map(person =>
                 person.id === id ? returnedPerson : person)
             )
+            setErrorMessage(`Person '${returnedPerson.name}' number changed!`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
           }
-          )
+          )      // Virheenkäsittely, jos promise feilaa
+          .catch(error => {
+            setErrorMessage(`Error! '${edited.name}' was not edited!`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+          })
       }
       // Palataan takaisin, jos numeroa ei vaihdeta
-      console.log('Numeron päivitys peruttu')
+      console.log('Number update cancelled')
       return
     }
 
@@ -77,6 +87,17 @@ const App = (props) => {
       .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setErrorMessage(`Person '${personObject.name}' added!`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
+      // Virheenkäsittely, jos promise feilaa
+      .catch(error => {
+        setErrorMessage(`Error! '${personObject.name}' was not added!`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
 
     console.log('New person added to phonebook:', personObject)
@@ -113,13 +134,24 @@ const App = (props) => {
   const handleRemove = (id) => {
     console.log('app.js / handleRemove / id:', id)
     const person = persons.find(person => person.id === id)
-    const remove = window.confirm(`Remove ${person.name} from phonebook?`)
+    const remove = window.confirm(`Remove '${person.name}' from phonebook?`)
     if (remove) {
       personService.remove(id).then(() => {
         const filterOut = persons.filter(person => person.id !== id)
         setPersons(filterOut)
-        console.log((`Person ${person.name} removed from phonebook`))
-      })
+        console.log((`Person '${person.name}' removed from phonebook`))
+        setErrorMessage(`Person '${person.name}' removed from phonebook`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })      // Virheenkäsittely, jos promise feilaa
+        .catch(error => {
+          setErrorMessage(`Error! '${person.name}' was not removed!`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
+
     }
 
   }
@@ -135,7 +167,7 @@ const App = (props) => {
     console.log('Found:', found)
     return found
   }
-  
+
   // Etsitään hakuehtoa vastaavat nimet ja palautetaan ne
   const filterNumbers = () => {
     if (newFilter === '') return persons
@@ -152,6 +184,7 @@ const App = (props) => {
         number={newNumber}
         handleNumber={handleNumberChange}
       />
+      <Notification message={errorMessage} />
       <h2>Numbers</h2>
       <Filter
         name={newFilter}

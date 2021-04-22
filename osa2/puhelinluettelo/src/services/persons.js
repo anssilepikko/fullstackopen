@@ -30,7 +30,6 @@ const remove = (id) => {
     return request.then(response => response.data)
 }
 
-
 // Koska olion kenttien nimet ovat samat kuin
 // niiden arvon määrittelevien muuttujien nimet,
 // voidaan olion määrittely kirjoittaa tiivimmässä muodossa:
