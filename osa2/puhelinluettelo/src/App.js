@@ -67,9 +67,10 @@ const App = (props) => {
               setErrorMessage(null)
             }, 5000)
           }
-          )      // Virheenkäsittely, jos promise feilaa
+          )
+          // Virheenkäsittely, jos promise feilaa
           .catch(error => {
-            setErrorMessage(`Error! '${edited.name}' was not edited!`)
+            setErrorMessage(`Error! '${edited.name}' was not edited! Probably removed from server...`)
             setTimeout(() => {
               setErrorMessage(null)
             }, 5000)
@@ -144,7 +145,8 @@ const App = (props) => {
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
-      })      // Virheenkäsittely, jos promise feilaa
+      })
+      // Virheenkäsittely, jos promise feilaa
         .catch(error => {
           setErrorMessage(`Error! '${person.name}' was not removed!`)
           setTimeout(() => {

@@ -3,7 +3,7 @@
     {
       "id": 2,
       "name": "Katto Kassinen",
-      "number": "123456"
+      "number": "123456789"
     },
     {
       "id": 3,
@@ -19,11 +19,6 @@
       "id": 5,
       "name": "Kaato Kolmikas",
       "number": "027595649"
-    },
-    {
-      "name": "Katto Kassinen 3434",
-      "number": "3434",
-      "id": 6
     }
   ]
 }
